@@ -1,38 +1,34 @@
 #include "Tests.h"
 
+#include <map>
+
+#include <iostream>
+
 
 double PirsonTest::check() {
-	__int64 minimum = min();
-	__int64 maximum = max();
-	double h = 1.0 * (maximum - minimum) / m_k;
+	std::map<__int64, __int64> out;
 
-	segments.push_back(minimum + h);
-
-	for (int i = 1; i < m_k; i++) {
-		segments.push_back(segments[i - 1] + h);
-	}
-
-	for (int i = 0; i < m_n; i++)
-	{
-		int j = 0;
-		while (sequence[i] > segments[j])
-		{
-			j++;
-			if (j == m_k)
-			{
-				j--;
-				break;
-			}
+	for (int i = 0; i < m_n; i++) {
+		__int64 value = m_gen->nextInt();
+		if (out.find(value) == out.end()) {
+			out[value] = 1;
 		}
-		frequency[j]++;
+		else {
+			out[value] += 1;
+		}
 	}
 
 	double hi = 0;
-	for (int j = 0; j < m_k; ++j) {
-		double h = pow(frequency[j] - m_n * m_gen->probability_func(j), 2);
-		double d = m_gen->probability_func(j) * m_n;
+	for (std::map<__int64, __int64>::iterator it = out.begin(); it != out.end(); it++) {
+		std::cout << it->first << " " << it->second << std::endl;
+		double h = it->second - m_n * m_gen->probability_func(it->first);
+		
+		h = h * h;
+
+		double d = m_gen->probability_func(it->first) * m_n;
 		hi += h / d;
 	}
+
 
 	return hi;
 

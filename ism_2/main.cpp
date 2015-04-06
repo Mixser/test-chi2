@@ -40,8 +40,9 @@ std::vector<ICongruentialGenerator *> create_generators(int m) {
 	std::vector<ICongruentialGenerator * > result;
 	for (int i = 0; i < m; i++)
 	{
-		__int64 s = rand() % 10000;
-		ICongruentialGenerator * gen = new LinearGenerator(48271, 0, 1, s);
+		__int64 s = 4294967295;
+		__int64 seed = rand() % 100000;
+		ICongruentialGenerator * gen = new LinearGenerator(48271, 0, seed, s);
 		result.push_back(gen);
 	}
 	return result;
@@ -50,10 +51,10 @@ std::vector<ICongruentialGenerator *> create_generators(int m) {
 int main(int argc, char ** argv) {
 	ICongruentialGenerator * sys = new SystemGenerator();
 	__int64 s = 4294967295;
-	ICongruentialGenerator * lin = new LinearGenerator(48271, 0, 1, s);
+	ICongruentialGenerator * lin = new LinearGenerator(48271, 0, 105, s);
 
-	//IProbabilityDistribution *p1 = new BernoulliDistribution(0.3, lin);
-	//IProbabilityDistribution *p2 = new UniformDistribution(lin,10);
+	IProbabilityDistribution *p1 = new BernoulliDistribution(0.3, lin);
+	IProbabilityDistribution *p2 = new UniformDistribution(lin,10);
 	IProbabilityDistribution *p3 = new BinomialDistribution(0.4, create_generators(12));
 	IProbabilityDistribution *p4 = new NegativeBinomialDistribution(0.2, 100, lin);
 	IProbabilityDistribution *p5 = new GeometricDistribution(0.2, lin);
@@ -61,9 +62,9 @@ int main(int argc, char ** argv) {
 	IProbabilityDistribution *p7 = new PoissonDistribution(10, lin);
 
 
-	std::cout << PirsonTest(10000, 11, p3).check() <<std::endl;
+	std::cout << PirsonTest(10000, p7).check() <<std::endl;
 
 
-	//output_to_csv("out.csv", p1, 10000);
+	//output_to_csv("out.csv", p3, 10000);
 	return 0;
 }

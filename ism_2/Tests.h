@@ -8,7 +8,6 @@ class PirsonTest
 {
 private:
 	int m_n;
-	int m_k;
 	IProbabilityDistribution * m_gen;
 
 	std::vector<__int64> sequence;
@@ -34,14 +33,8 @@ private:
 
 	
 public:
-	PirsonTest(int n, int k, IProbabilityDistribution * gen) :
-		m_n(n), m_k(k), m_gen(gen) {
-
-		for (int i = 0; i < m_n; i++){
-			sequence.push_back(gen->nextInt());
-		}
-		for (int i = 0; i < m_k; i++)
-			frequency.push_back(0);
+	PirsonTest(int n, IProbabilityDistribution * gen) :
+		m_n(n), m_gen(gen) {
 	};
 
 

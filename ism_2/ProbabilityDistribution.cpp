@@ -20,7 +20,7 @@ __int64 UniformDistribution::nextInt() {
 	double value = m_generator->nextDouble();
 	int result = 0;
 	for (int i = 0; i < m_n; i++) {
-		if (value < m_n)
+		if (value <=  1.0/ m_n * (i + 1) && value >  1.0/m_n * i)
 			return result;
 		result += 1;
 	}
@@ -29,7 +29,7 @@ __int64 UniformDistribution::nextInt() {
 
 __int64 BinomialDistribution::nextInt() {
 	__int64 result = 0;
-	for (__int64 i = 0; i < m_generators.size(); i++) {
+	for (int i = 0; i < m_generators.size(); i++) {
 		result += (m_p - m_generators[i]->nextDouble() > 0 ? 1 : 0);
 	}
 
@@ -55,7 +55,7 @@ __int64 NegativeBinomialDistribution::nextInt() {
 }
 
 __int64 GeometricDistribution::nextInt() {
-	return ceil(log(m_generator->nextDouble()) / log(m_q));
+	return floor(log(1-m_generator->nextDouble()) / log(m_q));
 }
 
 

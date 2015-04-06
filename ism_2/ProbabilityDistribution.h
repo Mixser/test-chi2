@@ -24,7 +24,11 @@ protected:
 		if (n - k < 0) {
 			return 0;
 		}
-		return factorial(n) / (factorial(n - k) * factorial(k));
+		double result = 1.0;
+		for (int i = 1; i <= k; i++) {
+			result = result * (n - k + i) * 1.0 / (i * 1.0);
+		}
+		return result;
 	}
 public:
 	IProbabilityDistribution() : m_generator(NULL){};
@@ -48,7 +52,7 @@ public:
 
 	double probability_func(__int64 x){
 		if (x == 0) {
-			return 1 - m_p;
+			return 1.0 - m_p;
 		}
 		else {
 			return m_p;
@@ -177,7 +181,10 @@ public:
 	PoissonDistribution(double p, ICongruentialGenerator * gen) : m_p(p), IProbabilityDistribution(gen) {};
 
 	double probability_func(__int64 x) {
-		return pow(m_p, x) * exp(-m_p) / factorial(x);
+		double result = pow(m_p, x) * exp(-m_p);
+		for (int i = 1; i <= x; i++)
+			result = result /  (i * 1.0);
+		return  result;
 	}
 
 	__int64 nextInt();
